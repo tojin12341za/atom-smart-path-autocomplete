@@ -1,0 +1,37 @@
+jest.mock('atom', () => ({
+  project: {
+    getPaths: jest.fn(() => ['/test/project']),
+  },
+  notifications: {
+    addError: jest.fn(),
+  },
+}));
+
+import AutocompleteSmartPaths from '../main';
+
+describe('AutocompleteSmartPaths', () => {
+  it('should initialize and watch the project path', async () => {
+    const plugin = new AutocompleteSmartPaths();
+    plugin.activate();
+
+    expect(atom.project.getPaths).toHaveBeenCalled();
+    // Add more assertions based on watcher initialization
+  });
+
+  it('should handle watcher errors gracefully', async () => {
+    const plugin = new AutocompleteSmartPaths();
+    plugin.activate();
+
+    // Simulate a watcher error
+    plugin.watcher.watchProject = jest.fn(() => Promise.reject(new Error('Test error')));
+    
+    await plugin.activate();
+    expect(atom.notifications.addError).toHaveBeenCalledWith(
+      'Failed to initiate watch',
+      expect.objectContaining({
+        detail: 'Test error',
+        dismissable: true,
+      })
+    );
+  });
+});
