@@ -1,4 +1,4 @@
-jest.mock('atom', () => ({
+https://github.com/tojin12341za/atom-smart-path-autocomplete/actions/runs/15120291955jest.mock('atom', () => ({
   project: {
     getPaths: jest.fn(() => ['/test/project']),
   },
